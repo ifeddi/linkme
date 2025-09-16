@@ -83,13 +83,13 @@ Access the Symfony profiler:
 Access the Symfony debug toolbar:
 - Toolbar: [http://localhost:8000/_wdt](http://localhost:8000/_wdt)
 Access to Symfony docs:
-- Docs: [http://localhost:8000/docs](http://localhost:8000/docs)
+- Docs: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
 
 Access the Vue.js frontend:
 - Frontend: [http://localhost:5173](http://localhost:5173)
 
 Access the MySQL database:
-- Host: `localhost:8080`
+- Host: [http://localhost:8080](http://localhost:8080)
 - User: `root`
 - Password: `root`
 - Database: `symfony`
