@@ -48,5 +48,6 @@ bash-frontend:
 
 install:
 	bash scripts/install.sh
+	$(MAKE) db-init
 
 rebuild: down build up

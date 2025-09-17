@@ -1,16 +1,11 @@
-# Vue.js + Symfony API Platform + Docker Starter
-
-This project is a starter template that sets up a **Vue.js frontend** with a **Symfony API Platform backend** using **Docker**.
-
----
-
 ## 🚀 Features
 - **Symfony 7 + API Platform** as the backend (PHP 8.2).
 - **Vue.js 3 + Vite + Vue Router + Vuex** as the frontend.
 - **MySQL 8** as the database.
+- **Elasticsearch 8** for search capabilities.
+- **Kibana 8** for Elasticsearch visualization and management.
 - **Docker & Docker Compose** for containerization.
 - **Makefile** for automation (easy commands).
-
 ---
 
 ## 📂 Project Structure
@@ -25,107 +20,71 @@ This project is a starter template that sets up a **Vue.js frontend** with a **S
 
 ---
 
-## ⚙️ Prerequisites
-Make sure you have installed:
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/)
-- [Make](https://www.gnu.org/software/make/)
-
----
-
-## 🛠️ Installation
-
-Clone the repository:
-```bash
-git clone https://github.com/ifeddi/linkme.git
-cd linkme
-```
-
-Install dependencies for **backend** and **frontend**:
-
-```bash
-make install
-```
-
----
-
 ## ▶️ Running the Project
 
-Start all services (backend, frontend, database):
+Start all services (backend, frontend, database, elasticsearch, kibana):
 ```bash
 make up
 ```
-
-Build/rebuild containers:
+Install backend and frontend dependencies:
 ```bash
-make build
+make install
 ```
+---
 
-Initialize the database (run migrations):
-```bash
-make db-init
-```
 
-Stop containers:
+## 🛠️ Services & Access
+
+- **Symfony API Platform:** [http://localhost:8000/api](http://localhost:8000/api)
+- **Vue.js Frontend:** [http://localhost:5173](http://localhost:5173)
+  - Login with default credentials: `user@linkme.com` / `123456`
+- **MySQL Database (phpMyAdmin):** [http://localhost:8080](http://localhost:8080)
+  - access with user `root` and password `root`
+- **Elasticsearch:** [http://localhost:9200](http://localhost:9200)
+- **Kibana:** [http://localhost:5601](http://localhost:5601)  
+  Use Kibana to visualize and manage your Elasticsearch data.
+---
+
+## 🧹 Useful Commands & Notes
+
+- Stop all services:
 ```bash
 make stop
 ```
-
-View logs:
+- Destroy all services and volumes (data loss):
+```bash
+make down
+```
+- Rebuild all services:
+```bash
+make rebuild
+```
+- View logs for all services:
 ```bash
 make logs
 ```
-
-Access the Symfony backend:
-- API Platform: [http://localhost:8000/api](http://localhost:8000/api)
-Access the Symfony profiler:
-- Profiler: [http://localhost:8000/_profiler](http://localhost:8000/_profiler)
-Access the Symfony debug toolbar:
-- Toolbar: [http://localhost:8000/_wdt](http://localhost:8000/_wdt)
-Access to Symfony docs:
-- Docs: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
-
-Access the Vue.js frontend:
-- Frontend: [http://localhost:5173](http://localhost:5173)
-
-Access the MySQL database:
-- Host: [http://localhost:8080](http://localhost:8080)
-- User: `root`
-- Password: `root`
-- Database: `symfony`
-
----
-
-## 🧹 Useful Commands
-
-Run Symfony console:
+- View logs for a specific service (e.g., backend):
 ```bash
-make console
+make logs-backend
+```
+- Clear backend cache:
+```bash
+make clear-backend-cache
 ```
 
-Run migrations:
-```bash
-make migrate
-```
-
-Access MySQL DB:
-```bash
-make db
-```
 
 ---
 
 ## 📝 Notes
-- Default MySQL credentials are set in `docker-compose.yml`.
-- Update `.env` in backend if you need custom DB settings.
-- The project is only a **starter kit**. You should adapt entities, Vue components, and authentication as needed.
+
+- Ensure you have enough memory allocated for Docker to run Elasticsearch (at least 2GB recommended).
+- The default configuration disables security for local usage. For production, review Elasticsearch security best practices.
+- Kibana is automatically connected to Elasticsearch (see `docker-compose.yml`). Access the Kibana dashboard at [http://localhost:5601](http://localhost:5601).
+- Use Kibana to create dashboards, view indexes, and interact with your Elasticsearch data.
 
 ---
 
 ## 📖 Next Steps
-- Add authentication (JWT already integrated in Symfony skeleton).
-- Customize Vue components for your app needs.
-- Extend API Platform with custom operations.
 
----
-Made with ❤️ using Symfony, Vue, and Docker.
+- Integrate Elasticsearch with your Symfony backend (e.g., using FOSElasticaBundle or ElasticSearch PHP client).
+- Extend API Platform to support searching/filtering with Elasticsearch.

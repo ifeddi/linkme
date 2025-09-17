@@ -10,8 +10,11 @@ services:
       - ./backend:/var/www/html
     environment:
       DATABASE_URL: "mysql://symfony:symfony@db:3306/symfony"
+      ELASTICSEARCH_HOST: "elasticsearch"
+      ELASTICSEARCH_PORT: "9200"
     depends_on:
       - db
+      - elasticsearch
     command: php -S 0.0.0.0:8000 -t public
 
   frontend:
@@ -48,3 +51,39 @@ services:
       - "8080:80"
     depends_on:
       - db
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+volumes:
+  esdata:
