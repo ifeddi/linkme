@@ -6,25 +6,29 @@
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         class="profile-img-card"
       />
-      <form @submit.prevent="handleLogin">
+      <form @submit.prevent="handleRegister">
         <div class="form-group">
           <label for="email">Email</label>
           <input v-model="email" type="email" placeholder="Email" required />
         </div>
         <div class="form-group">
+          <label for="username">Username</label>
+          <input v-model="username" type="text" placeholder="Username" required />
+        </div>
+        <div class="form-group">
           <label for="password">Password</label>
           <input v-model="password" type="password" placeholder="Password" required />
         </div>
-        <div class="forgot-password-link">
-          <router-link to="/forgot-password">Forgot your password?</router-link>
-        </div>
-        <button type="submit" class="btn primary">Login</button>
+        <button type="submit" class="btn success" :disabled="loading">
+          <span v-if="loading">Registering…</span>
+          <span v-else>Register</span>
+        </button>
         <p v-if="error" class="alert error">{{ error }}</p>
+        <p v-if="success" class="alert success">{{ successMessage }}</p>
+        <p class="link">
+          Already have an account? <router-link to="/login">Login</router-link>
+        </p>
       </form>
-      <p class="link">
-        No account?
-        <router-link to="/register">Register</router-link>
-      </p>
     </div>
   </div>
 </template>
@@ -32,24 +36,30 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { register as apiRegister } from "../api";
 
 const email = ref("");
+const username = ref("");
 const password = ref("");
 const error = ref(null);
-const auth = useAuthStore();
+const success = ref(false);
+const successMessage = ref("");
+const loading = ref(false);
 const router = useRouter();
 
-const handleLogin = async () => {
+const handleRegister = async () => {
+  error.value = null;
+  success.value = false;
+  loading.value = true;
   try {
-    const success = await auth.login(email.value, password.value);
-    if (success) {
-      router.push("/");
-    } else {
-      error.value = "Invalid credentials";
-    }
-  } catch (err) {
-    error.value = err.message || "Login failed";
+    const response = await apiRegister(password.value, email.value, username.value);
+    success.value = true;
+    successMessage.value = response.data.message || "Account created successfully! Please check your email to verify your account.";
+    // Don't redirect automatically, let user see the message
+  } catch (e) {
+    error.value = e?.response?.data?.message || "Registration failed";
+  } finally {
+    loading.value = false;
   }
 };
 </script>
@@ -100,7 +110,7 @@ input {
 }
 
 input:focus {
-  border-color: #007bff;
+  border-color: #28a745;
 }
 
 .btn {
@@ -114,12 +124,12 @@ input:focus {
   margin-top: 10px;
 }
 
-.btn.primary {
-  background: #007bff;
+.btn.success {
+  background: #28a745;
 }
 
-.btn.primary:hover {
-  background: #0056b3;
+.btn.success:hover {
+  background: #1e7e34;
 }
 
 .alert {
@@ -134,24 +144,9 @@ input:focus {
   color: #721c24;
 }
 
-.forgot-password-link {
-  text-align: right;
-  margin-bottom: 15px;
-}
-
-.forgot-password-link a {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.forgot-password-link a:hover {
-  text-decoration: underline;
-}
-
-.link {
-  margin-top: 15px;
-  font-size: 14px;
+.alert.success {
+  background: #d4edda;
+  color: #155724;
 }
 
 /* Responsive Design */
@@ -195,16 +190,9 @@ input:focus {
     font-size: 15px;
   }
   
-  .forgot-password-link {
-    margin-bottom: 12px;
-  }
-  
-  .forgot-password-link a {
+  .alert {
     font-size: 13px;
-  }
-  
-  .link {
-    font-size: 13px;
+    padding: 8px;
   }
 }
 
@@ -269,8 +257,8 @@ input:focus {
   }
   
   .alert {
-    padding: 8px;
-    font-size: 13px;
+    padding: 7px;
+    font-size: 12px;
   }
 }
 </style>
