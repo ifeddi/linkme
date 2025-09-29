@@ -8,14 +8,22 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/var/www/html
+      - vendor:/var/www/html/vendor
+      - var:/var/www/html/var
     environment:
       DATABASE_URL: "mysql://symfony:symfony@db:3306/symfony"
+      APP_ENV: "prod"
+      APP_DEBUG: "0"
       ELASTICSEARCH_HOST: "elasticsearch"
       ELASTICSEARCH_PORT: "9200"
+      JWT_PASSPHRASE: "your-jwt-passphrase-here"
+      MERCURE_URL: "http://mercure/.well-known/mercure"
+      MERCURE_PUBLISHER_JWT_KEY: "BD1acaTbTjyOFXZ0Sk7QUNWvCF7t1GMxajBWuiNlJzU="
+      MERCURE_SUBSCRIBER_JWT_KEY: "BD1acaTbTjyOFXZ0Sk7QUNWvCF7t1GMxajBWuiNlJzU="
     depends_on:
       - db
       - elasticsearch
-    command: php -S 0.0.0.0:8000 -t public
+    command: sh -c "composer install --no-interaction --no-ansi --no-progress --no-dev --prefer-dist --optimize-autoloader && php bin/console cache:clear --no-warmup && php bin/console cache:warmup && php -S 0.0.0.0:8000 -t public"
 
   frontend:
     build: ./frontend
@@ -85,5 +93,27 @@ services:
     depends_on:
       - elasticsearch
 
+  mercure:
+    image: dunglas/mercure
+    container_name: mercure
+    restart: unless-stopped
+    environment:
+      - SERVER_NAME=:80
+      - MERCURE_PUBLISHER_JWT_KEY="BD1acaTbTjyOFXZ0Sk7QUNWvCF7t1GMxajBWuiNlJzU="
+      - MERCURE_SUBSCRIBER_JWT_KEY="BD1acaTbTjyOFXZ0Sk7QUNWvCF7t1GMxajBWuiNlJzU="
+      - MERCURE_EXTRA_DIRECTIVES=cors_origins http://localhost:5173
+    ports:
+      - "3000:80"
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "8025:8025"  # UI web
+      - "1025:1025"  # SMTP
+      
 volumes:
   esdata:
+  vendor:
+  var:
+  dbdata:
