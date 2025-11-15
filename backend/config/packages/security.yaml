@@ -14,8 +14,10 @@ security:
             security: false
 
         login:
-            pattern: ^/api/login
+            pattern: ^/api/login_check
             stateless: true
+            provider: app_user_provider
+            user_checker: App\Security\UserChecker
             json_login:
                 check_path: /api/login_check
                 username_path: email
@@ -30,7 +32,12 @@ security:
 
     access_control:
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        # Allow the login_check endpoint which the frontend posts to
+        - { path: ^/api/login_check, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/verify-email, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/forgot-password, roles: PUBLIC_ACCESS }
+        - { path: ^/api/user/reset-password, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
