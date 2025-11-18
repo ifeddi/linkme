@@ -1,4 +1,4 @@
-## 🚀 Features
+t## 🚀 Features
 - **Symfony 7 + API Platform** as the backend (PHP 8.2).
 - **Vue.js 3 + Vite + Vue Router + Vuex** as the frontend.
 - **MySQL 8** as the database.
@@ -20,6 +20,16 @@
 
 ---
 
+## ▶️ Pre-requires
+```
+- PHP >= 8.2 with extensions: `php-xml`, `php-cli`, `php-zip` and the `unzip` utility
+- `git`
+- `docker` and `docker-compose` (ensure Docker has enough memory for Elasticsearch)
+- `composer`
+- `node` and `npm` (required for frontend)
+```
+---
+
 ## ▶️ Running the Project
 
 Start all services (backend, frontend, database, elasticsearch, kibana):
@@ -30,6 +40,12 @@ Install backend and frontend dependencies:
 ```bash
 make install
 ```
+
+Create new user from registration page:
+http://localhost:5173/register
+Verify your email address before logging in http://localhost:8025.
+
+
 ---
 
 
@@ -37,7 +53,7 @@ make install
 
 - **Symfony API Platform:** [http://localhost:8000/api](http://localhost:8000/api)
 - **Vue.js Frontend:** [http://localhost:5173](http://localhost:5173)
-  - Login with default credentials: `user@linkme.com` / `123456`
+- **Mailhog (for email testing):** [http://localhost:8025](http://localhost:8025)
 - **MySQL Database (phpMyAdmin):** [http://localhost:8080](http://localhost:8080)
   - access with user `root` and password `root`
 - **Elasticsearch:** [http://localhost:9200](http://localhost:9200)
