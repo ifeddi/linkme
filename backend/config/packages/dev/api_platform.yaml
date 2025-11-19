@@ -1,0 +1,9 @@
+# Dev-only API Platform settings to expose detailed errors
+api_platform:
+    error_formats:
+        jsonld: ['application/ld+json', '+json']
+        json: ['application/json', '+json']
+        problem: ['application/problem+json', '+json']
+
+    # Enable debug exception listener - ensure API Platform will return detailed exceptions in dev
+    exception_to_status: {}

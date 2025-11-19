@@ -1,4 +1,4 @@
-.PHONY: build up down logs bash install
+.PHONY: build up down destroy logs bash install
 
 build:
 	@echo "🔨 Building containers..."
@@ -11,6 +11,10 @@ up:
 down:
 	@echo "🛑 Stopping containers..."
 	docker-compose down
+
+destroy:
+	@echo "🧨 Destroying containers, images and volumes..."
+	docker-compose down --rmi all -v --remove-orphans
 
 start:
 	@echo "▶️ Starting containers..."
