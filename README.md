@@ -1,4 +1,10 @@
-t## 🚀 Features
+![linkme](img/linkme.png)
+
+## 🚀 Project Overview
+This project is a full-stack web application template that combines a modern backend and frontend stack with powerful
+search capabilities using Elasticsearch and Kibana. It is designed to help developers quickly set up a robust development environment for building scalable web applications.
+
+### ⚙️ Technologies Used
 - **Symfony 7 + API Platform** as the backend (PHP 8.2).
 - **Vue.js 3 + Vite + Vue Router + Vuex** as the frontend.
 - **MySQL 8** as the database.
@@ -40,14 +46,10 @@ Install backend and frontend dependencies:
 ```bash
 make install
 ```
-
 Create new user from registration page:
 http://localhost:5173/register
 Verify your email address before logging in http://localhost:8025.
-
-
 ---
-
 
 ## 🛠️ Services & Access
 

@@ -51,8 +51,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'follower', targetEntity: Follow::class, orphanRemoval: true)]
     private Collection $following;
 
-    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: Follow::class, orphanRemoval: true)]
-    private Collection $followers;
+//    #[ORM\OneToMany(mappedBy: 'followed', targetEntity: Follow::class, orphanRemoval: true)]
+//    private Collection $followers;
 
     // --- Nouvelles propriétés ajoutées ---
     #[ORM\Column(type: 'boolean')]

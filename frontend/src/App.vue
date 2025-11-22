@@ -40,16 +40,16 @@ onMounted(() => {
   authStore.initAuth()
   
   // Mettre à jour le statut en ligne toutes les 30 secondes
-  if (authStore.isLoggedIn) {
-    authStore.updateOnlineStatus()
-    const statusInterval = setInterval(() => {
-      if (authStore.isLoggedIn) {
-        authStore.updateOnlineStatus()
-      } else {
-        clearInterval(statusInterval)
-      }
-    }, 30000) // 30 secondes
-  }
+  // if (authStore.isLoggedIn) {
+  //   authStore.updateOnlineStatus()
+  //   const statusInterval = setInterval(() => {
+  //     if (authStore.isLoggedIn) {
+  //       authStore.updateOnlineStatus()
+  //     } else {
+  //       clearInterval(statusInterval)
+  //     }
+  //   }, 30000) // 30 secondes
+  // }
 })
 </script>
 

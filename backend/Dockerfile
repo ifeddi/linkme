@@ -2,7 +2,7 @@ FROM php:8.3-cli-bullseye
 
 # Mise à jour et installation des dépendances
 RUN apt-get update -o Acquire::ForceIPv4=true \
-    && apt-get install -y git unzip libicu-dev libpq-dev libzip-dev zip \
+    && apt-get install -y git unzip libicu-dev libpq-dev libzip-dev zip openssl \
     && docker-php-ext-install intl pdo pdo_mysql opcache \
     && rm -rf /var/lib/apt/lists/*
 

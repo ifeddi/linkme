@@ -5,4 +5,4 @@ services:
     environment:
       APP_ENV: "dev"
       APP_DEBUG: "1"
-    command: sh -c "composer install --no-interaction --no-ansi --no-progress && php -S 0.0.0.0:8000 -t public"
+    command: sh -c "php scripts/ensure_jwt_keys.php && composer install --no-interaction --no-ansi --no-progress && php -S 0.0.0.0:8000 -t public"

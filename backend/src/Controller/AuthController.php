@@ -73,22 +73,23 @@ class AuthController extends AbstractController
     #[Route('/api/user/profile', name: 'api_user_profile', methods: ['GET'])]
     public function getProfile(): Response
     {
-        $user = $this->getUser();
-        
-        if (!$user) {
-            return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
-        }
-
-        return new JsonResponse([
-            'id' => $user->getId(),
-            'email' => $user->getEmail(),
-            'name' => $user->getName(),
-            'bio' => $user->getBio(),
-            'profilePhoto' => $user->getProfilePhoto(),
-            'postsCount' => $user->getPosts()->count(),
-            'followersCount' => $user->getFollowers()->count(),
-            'followingCount' => $user->getFollowing()->count()
-        ]);
+        dd('getProfile not implemented yet');
+//        $user = $this->getUser();
+//
+//        if (!$user) {
+//            return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
+//        }
+//
+//        return new JsonResponse([
+//            'id' => $user->getId(),
+//            'email' => $user->getEmail(),
+//            'name' => $user->getName(),
+//            'bio' => $user->getBio(),
+//            'profilePhoto' => $user->getProfilePhoto(),
+//            'postsCount' => $user->getPosts()->count(),
+//            'followersCount' => $user->getFollowers()->count(),
+//            'followingCount' => $user->getFollowing()->count()
+//        ]);
     }
 
     #[Route('/api/user/profile', name: 'api_user_update_profile', methods: ['PUT'])]
@@ -98,7 +99,7 @@ class AuthController extends AbstractController
         UserPasswordHasherInterface $passwordHasher
     ): Response {
         $user = $this->getUser();
-        
+
         if (!$user) {
             return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
         }

@@ -15,7 +15,6 @@ export const useFollowingsStore = defineStore('followings', {
       try {
         const response = await getFollowings()
         this.followings = response.data
-        console.log('Followings loaded:', this.followings)
       } catch (error) {
         console.error('Error loading followings:', error)
         this.error = error.response?.data?.message || 'Failed to load followings'

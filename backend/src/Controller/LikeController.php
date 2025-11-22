@@ -17,7 +17,7 @@ class LikeController extends AbstractController
     public function toggleLike(int $postId, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        
+
         if (!$user) {
             return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
         }
@@ -38,7 +38,7 @@ class LikeController extends AbstractController
             // Supprimer le like
             $entityManager->remove($existingLike);
             $entityManager->flush();
-            
+
             return new JsonResponse([
                 'liked' => false,
                 'likesCount' => $post->getLikesCount()
@@ -48,9 +48,9 @@ class LikeController extends AbstractController
             $like = new Like();
             $like->setUser($user);
             $like->setPost($post);
-            
+
             $entityManager->persist($like);
-            
+
             // Créer une notification si l'utilisateur qui like n'est pas l'auteur du post
             if ($user->getId() !== $post->getAuthor()->getId()) {
                 $notification = new Notification();
@@ -59,12 +59,12 @@ class LikeController extends AbstractController
                 $notification->setRecipient($post->getAuthor());
                 $notification->setActor($user);
                 $notification->setPost($post);
-                
+
                 $entityManager->persist($notification);
             }
-            
+
             $entityManager->flush();
-            
+
             return new JsonResponse([
                 'liked' => true,
                 'likesCount' => $post->getLikesCount()
@@ -76,7 +76,7 @@ class LikeController extends AbstractController
     public function getLikeStatus(int $postId, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        
+
         if (!$user) {
             return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
         }
@@ -109,9 +109,9 @@ class LikeController extends AbstractController
 
         $conn = $entityManager->getConnection();
         $stmt = $conn->executeQuery(
-            'SELECT u.id, u.name, u.profile_photo 
-             FROM user u 
-             INNER JOIN `like` l ON u.id = l.user_id 
+            'SELECT u.id, u.name, u.profile_photo
+             FROM user u
+             INNER JOIN `like` l ON u.id = l.id
              WHERE l.post_id = :postId
              ORDER BY l.created_at DESC
              LIMIT 20',
